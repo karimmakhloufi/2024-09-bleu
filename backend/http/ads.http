@@ -18,3 +18,12 @@ Content-Type: application/json
 
 ###
 DELETE http://localhost:3000/ads/1
+
+###
+
+PUT http://localhost:3000/ads/1
+Content-Type: application/json
+
+{
+  "price": 2000
+}
