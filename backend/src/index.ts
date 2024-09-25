@@ -48,20 +48,30 @@ app.delete("/ads/:id", (req, res) => {
 });
 
 app.put("/ads/:id", (req, res) => {
-  const stmt = db.prepare(
-    "UPDATE ad SET title = ?, description = ?, owner = ?, price = ?, picture = ?, location = ?, createdAt = ? WHERE id = ?"
-  );
-  stmt.run([
-    req.body.title,
-    req.body.description,
-    req.body.owner,
-    req.body.price,
-    req.body.picture,
-    req.body.location,
-    req.body.createdAt,
+  db.get(
+    "SELECT * FROM ad WHERE id = (?)",
     req.params.id,
-  ]);
-  res.send("Ad has been upadted");
+    (_err, data: any) => {
+      const stmt = db.prepare(
+        "UPDATE ad SET title = ?, description = ?, owner = ?, price = ?, picture = ?, location = ?, createdAt = ? WHERE id = ?"
+      );
+      stmt.run([
+        req.body.title ? req.body.title : data.title,
+        req.body.description ? req.body.description : data.description,
+        req.body.owner ? req.body.owner : data.owner,
+        req.body.price ? req.body.price : data.price,
+        req.body.picture ? req.body.picture : data.picture,
+        req.body.location ? req.body.location : data.location,
+        req.body.createdAt ? req.body.createdAt : data.createdAt,
+        req.params.id,
+      ]);
+    }
+  );
+
+  /*
+
+  */
+  res.send("Ad has been updated");
 });
 
 app.listen(port, () => {
