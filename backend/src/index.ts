@@ -51,7 +51,19 @@ app.get("/ads", (_req, res) => {
 
 app.post("/ads", (req, res) => {
   console.log("request body", req.body);
-  ads.push(req.body);
+  const stmt = db.prepare(
+    "INSERT INTO ad (title, description, owner, price, picture, location, createdAt) VALUES (?, ?, ?, ?, ?, ?,?)"
+  );
+  stmt.run([
+    req.body.title,
+    req.body.description,
+    req.body.owner,
+    req.body.price,
+    req.body.picture,
+    req.body.location,
+    req.body.createdAt,
+  ]);
+  // ads.push(req.body);
   res.send("ad has been created");
 });
 
