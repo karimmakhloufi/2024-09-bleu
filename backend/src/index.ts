@@ -12,14 +12,29 @@ app.get("/", (_req, res) => {
   res.send("Hello World test reload");
 });
 
-app.get("/ads", (_req, res) => {
-  db.all("SELECT * from ad", (err, rows) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(rows);
-    }
-  });
+app.get("/ads", (req, res) => {
+  console.log("query", req.query);
+  if (req.query.location) {
+    db.all(
+      "SELECT * from ad WHERE location LIKE ?",
+      req.query.location,
+      (err, rows) => {
+        if (err) {
+          console.log(err);
+        } else {
+          res.send(rows);
+        }
+      }
+    );
+  } else {
+    db.all("SELECT * from ad", (err, rows) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(rows);
+      }
+    });
+  }
 });
 
 app.post("/ads", (req, res) => {
