@@ -1,3 +1,4 @@
+import { MinLength } from "class-validator";
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -9,6 +10,7 @@ export class Ad extends BaseEntity {
   title: string;
 
   @Column()
+  @MinLength(10)
   description: string;
 
   @Column()

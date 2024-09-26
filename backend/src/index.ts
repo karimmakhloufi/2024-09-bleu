@@ -2,6 +2,7 @@ import "reflect-metadata";
 import express from "express";
 import { dataSourceGoodCorner } from "./config/db";
 import { Ad } from "./entities/Ad";
+import { validate } from "class-validator";
 
 const app = express();
 const port = 3000;
@@ -17,10 +18,26 @@ app.get("/ads", async (_req, res) => {
   res.send(ads);
 });
 
-app.post("/ads", (req, res) => {
+app.post("/ads", async (req, res) => {
   console.log("request body", req.body);
+  const adToSave = new Ad();
+  adToSave.createdAt = req.body.createdAt;
+  adToSave.description = req.body.description;
+  adToSave.location = req.body.location;
+  adToSave.owner = req.body.owner;
+  adToSave.picture = req.body.picture;
+  adToSave.price = req.body.price;
+  adToSave.title = req.body.title;
 
-  res.send("ad has been created");
+  const errors = await validate(adToSave);
+  if (errors.length > 0) {
+    console.log(errors);
+    // throw new Error("Validation failed");
+    res.status(400).send("Invalid input");
+  } else {
+    const result = await adToSave.save();
+    res.send(result);
+  }
 });
 
 app.delete("/ads/:id", (_req, res) => {
