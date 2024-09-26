@@ -14,6 +14,10 @@ CREATE TABLE IF NOT EXISTS ad
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
+SELECT * FROM ad
+LEFT JOIN category ON category.id = ad.category_id;
+
+/*
 INSERT INTO ad (title, description, owner, price, picture, location, createdAt, category_id)
     VALUES (
         "blouson",
@@ -23,7 +27,6 @@ INSERT INTO ad (title, description, owner, price, picture, location, createdAt, 
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtkhSfpK4Kc3w6PMHl0at0J8A3XlBeV2TAtw&s",
         "Lyon",
         DateTime('now'),
-        1
+        4
     );
-/*
 
