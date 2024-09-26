@@ -20,9 +20,9 @@ DELETE http://localhost:3000/ads/1
 
 ###
 
-PUT http://localhost:3000/ads/2
+PUT http://localhost:3000/ads/10
 Content-Type: application/json
 
 {
-  "title": "Red bike to sell"
+  "title": "Green bike to sell"
 }

@@ -40,15 +40,23 @@ app.post("/ads", async (req, res) => {
   }
 });
 
-app.delete("/ads/:id", (_req, res) => {
+app.delete("/ads/:id", async (req, res) => {
+  const result = await Ad.delete(req.params.id);
+  console.log(result);
   res.send("Ad has been deleted");
 });
 
-app.put("/ads/:id", (_req, res) => {
-  /*
-
-  */
-  res.send("Ad has been updated");
+app.put("/ads/:id", async (req, res) => {
+  try {
+    let adToUpdate = await Ad.findOneByOrFail({ id: parseInt(req.params.id) });
+    adToUpdate = Object.assign(adToUpdate, req.body);
+    const result = await adToUpdate.save();
+    console.log(result);
+    res.send("Ad has been updated");
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("invalid request");
+  }
 });
 
 app.listen(port, async () => {
