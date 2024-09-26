@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE IF NOT EXISTS ad 
 (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -7,10 +9,12 @@ CREATE TABLE IF NOT EXISTS ad
 	price INT,
     picture VARCHAR(100),
     location VARCHAR(100),
-	createdAt DATE
+	createdAt DATE,
+    category_id INT NOT NULL,
+    FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
-INSERT INTO ad (title, description, owner, price, picture, location, createdAt)
+INSERT INTO ad (title, description, owner, price, picture, location, createdAt, category_id)
     VALUES (
         "blouson",
         "je vends mon blouson",
@@ -18,5 +22,8 @@ INSERT INTO ad (title, description, owner, price, picture, location, createdAt)
         100,
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtkhSfpK4Kc3w6PMHl0at0J8A3XlBeV2TAtw&s",
         "Lyon",
-        DateTime('now')
+        DateTime('now'),
+        1
     );
+/*
+
