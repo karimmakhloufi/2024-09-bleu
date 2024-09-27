@@ -3,6 +3,7 @@ import express from "express";
 import { dataSourceGoodCorner } from "./config/db";
 import { Ad } from "./entities/Ad";
 import { validate } from "class-validator";
+import { Category } from "./entities/Category";
 
 const app = express();
 const port = 3000;
@@ -14,7 +15,7 @@ app.get("/", (_req, res) => {
 });
 
 app.get("/ads", async (_req, res) => {
-  const ads = await Ad.find();
+  const ads = await Ad.find({ relations: { category: true } });
   res.send(ads);
 });
 
@@ -28,6 +29,7 @@ app.post("/ads", async (req, res) => {
   adToSave.picture = req.body.picture;
   adToSave.price = req.body.price;
   adToSave.title = req.body.title;
+  adToSave.category = req.body.category ? req.body.category : 1;
 
   const errors = await validate(adToSave);
   if (errors.length > 0) {
@@ -57,6 +59,11 @@ app.put("/ads/:id", async (req, res) => {
     console.log(err);
     res.status(400).send("invalid request");
   }
+});
+
+app.get("/categories", async (_req, res) => {
+  const categories = await Category.find();
+  res.send(categories);
 });
 
 app.listen(port, async () => {
