@@ -1,1 +1,1 @@
-GET http://localhost:3000/categories
+GET http://localhost:3000/categories?title=au

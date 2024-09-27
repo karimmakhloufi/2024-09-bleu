@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import express from "express";
+import { Like } from "typeorm";
 import { dataSourceGoodCorner } from "./config/db";
 import { Ad } from "./entities/Ad";
 import { validate } from "class-validator";
@@ -14,8 +15,18 @@ app.get("/", (_req, res) => {
   res.send("Hello World test reload");
 });
 
-app.get("/ads", async (_req, res) => {
-  const ads = await Ad.find({ relations: { category: true } });
+app.get("/ads", async (req, res) => {
+  let ads: Ad[];
+  if (req.query.category) {
+    ads = await Ad.find({
+      where: {
+        category: { title: req.query.category as string },
+      },
+      relations: { category: true },
+    });
+  } else {
+    ads = await Ad.find({ relations: { category: true } });
+  }
   res.send(ads);
 });
 
@@ -61,8 +72,17 @@ app.put("/ads/:id", async (req, res) => {
   }
 });
 
-app.get("/categories", async (_req, res) => {
-  const categories = await Category.find();
+app.get("/categories", async (req, res) => {
+  let categories: Category[];
+  if (req.query.title) {
+    categories = await Category.find({
+      where: {
+        title: Like(`${req.query.title as string}%`),
+      },
+    });
+  } else {
+    categories = await Category.find();
+  }
   res.send(categories);
 });
 
