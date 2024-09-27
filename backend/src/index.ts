@@ -5,6 +5,7 @@ import { dataSourceGoodCorner } from "./config/db";
 import { Ad } from "./entities/Ad";
 import { validate } from "class-validator";
 import { Category } from "./entities/Category";
+import { Tag } from "./entities/Tag";
 
 const app = express();
 const port = 3000;
@@ -22,10 +23,10 @@ app.get("/ads", async (req, res) => {
       where: {
         category: { title: req.query.category as string },
       },
-      relations: { category: true },
+      relations: { category: true, tags: true },
     });
   } else {
-    ads = await Ad.find({ relations: { category: true } });
+    ads = await Ad.find({ relations: { category: true, tags: true } });
   }
   res.send(ads);
 });
@@ -41,6 +42,9 @@ app.post("/ads", async (req, res) => {
   adToSave.price = req.body.price;
   adToSave.title = req.body.title;
   adToSave.category = req.body.category ? req.body.category : 1;
+  if (req.body.tags) {
+    adToSave.tags = req.body.tags;
+  }
 
   const errors = await validate(adToSave);
   if (errors.length > 0) {
@@ -84,6 +88,67 @@ app.get("/categories", async (req, res) => {
     categories = await Category.find();
   }
   res.send(categories);
+});
+
+app.post("/categories", async (req, res) => {
+  const categoryToSave = new Category();
+  categoryToSave.title = req.body.title;
+  await categoryToSave.save();
+  res.send("Category has been saved");
+});
+
+app.put("/categories/:id", async (req, res) => {
+  try {
+    let categoryToUpdate = await Category.findOneByOrFail({
+      id: parseInt(req.params.id),
+    });
+    categoryToUpdate = Object.assign(categoryToUpdate, req.body);
+    const result = await categoryToUpdate.save();
+    console.log(result);
+    res.send("Category has been updated");
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("invalid request");
+  }
+});
+
+app.delete("/categories/:id", async (req, res) => {
+  const result = await Category.delete(req.params.id);
+  console.log(result);
+  res.send("Category has been deleted");
+});
+
+app.get("/tags", async (_req, res) => {
+  const tags = await Tag.find();
+  res.send(tags);
+});
+
+app.post("/tags", async (req, res) => {
+  const tagToSave = new Tag();
+  tagToSave.name = req.body.name;
+  await tagToSave.save();
+  res.send("Tag has been created");
+});
+
+app.put("/tags/:id", async (req, res) => {
+  try {
+    let tagToUpdate = await Tag.findOneByOrFail({
+      id: parseInt(req.params.id),
+    });
+    tagToUpdate = Object.assign(tagToUpdate, req.body);
+    const result = await tagToUpdate.save();
+    console.log(result);
+    res.send("Tag has been updated");
+  } catch (err) {
+    console.log(err);
+    res.status(400).send("invalid request");
+  }
+});
+
+app.delete("/tags/:id", async (req, res) => {
+  const result = await Tag.delete(req.params.id);
+  console.log(result);
+  res.send("Tag has been deleted");
 });
 
 app.listen(port, async () => {
