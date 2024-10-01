@@ -25,7 +25,6 @@ h1 {
 
 .main-menu {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 10px;
   color: #ffa41b;
@@ -43,6 +42,7 @@ h1 {
 .category-navigation-link {
   text-decoration: unset;
   color: inherit;
+  margin-right: 10px;
 }
 
 .button {
@@ -143,6 +143,10 @@ h1 {
   font-weight: bold;
 }
 
+.ad-card-category {
+  font-size: 12px;
+}
+
 .ad-details-image-container {
   margin-inline-start: -24px;
   margin-inline-end: -24px;
@@ -168,7 +172,6 @@ h1 {
   .categories-navigation {
     padding-top: 14px;
     display: flex;
-    justify-content: space-between;
   }
 
   .ad-details-image-container {

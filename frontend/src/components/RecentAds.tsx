@@ -1,59 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdCard, { AdCardProps } from "./AdCard";
+import axios from "axios";
 
 const RecentAds = () => {
-  const adsData: AdCardProps[] = [
-    {
-      img_url: "/images/table.webp",
-      title: "Table",
-      link: "/ads/table",
-      price: 120,
-    },
-    {
-      img_url: "/images/bougie.webp",
-      title: "Bougie",
-      link: "/ads/bougie",
-      price: 3,
-    },
-    {
-      img_url: "/images/dame-jeanne.webp",
-      title: "Dame-jeanne",
-      link: "/ads/dame-jeanne",
-      price: 30,
-    },
-    {
-      img_url: "/images/porte-magazine.webp",
-      title: "Porte-magazine",
-      link: "/ads/porte-magazine",
-      price: 20,
-    },
-    {
-      img_url: "/images/vaisselier.webp",
-      title: "Vaisselier",
-      link: "/ads/vaisselier",
-      price: 300,
-    },
-    {
-      img_url: "/images/vide-poche.webp",
-      title: "Vide-poche",
-      link: "/ads/vide-poche",
-      price: 5,
-    },
-  ];
+  const [ads, setAds] = useState([] as AdCardProps[]);
   const [total, setTotal] = useState(0);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get("http://localhost:3000/ads");
+        setAds(result.data);
+      } catch (err) {
+        console.log("error", err);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <>
       <h2>Annonces récentes</h2>
       <p>Total: {total} €</p>
       <section className="recent-ads">
-        {adsData.map((el) => (
-          <div>
+        {ads.map((el) => (
+          <div key={el.id}>
             <AdCard
-              key={el.title}
+              id={el.id}
               title={el.title}
-              img_url={el.img_url}
+              picture={el.picture}
               link={el.link}
               price={el.price}
+              category={el.category}
             />
             <button
               onClick={() => {
