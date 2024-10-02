@@ -54,8 +54,13 @@ app.post("/ads", async (req, res) => {
     // throw new Error("Validation failed");
     res.status(400).send("Invalid input");
   } else {
-    const result = await adToSave.save();
-    res.send(result);
+    try {
+      const result = await adToSave.save();
+      res.send(result);
+    } catch (err) {
+      console.log("err", err);
+      res.status(400).send(JSON.stringify(err));
+    }
   }
 });
 
