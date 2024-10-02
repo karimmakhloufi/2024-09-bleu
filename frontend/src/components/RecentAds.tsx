@@ -37,6 +37,13 @@ const RecentAds = () => {
             >
               Add to total
             </button>
+            <button
+              onClick={() => {
+                axios.delete(`http://localhost:3000/ads/${el.id}`);
+              }}
+            >
+              Delete
+            </button>
           </div>
         ))}
       </section>
