@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export type category = {
   id: number;
@@ -23,10 +24,10 @@ const Header = () => {
     <header className="header">
       <div className="main-menu">
         <h1>
-          <a href="/" className="button logo link-button">
+          <Link to="/" className="button logo link-button">
             <span className="mobile-short-label">TGC</span>
             <span className="desktop-long-label">THE GOOD CORNER</span>
-          </a>
+          </Link>
         </h1>
         <form className="text-field-with-button">
           <input className="text-field main-search-field" type="search" />
@@ -46,16 +47,16 @@ const Header = () => {
             </svg>
           </button>
         </form>
-        <a href="/ad/new" className="button link-button">
+        <Link to="/ad/new" className="button link-button">
           <span className="mobile-short-label">Publier</span>
           <span className="desktop-long-label">Publier une annonce</span>
-        </a>
+        </Link>
       </div>
       <nav className="categories-navigation">
         {categories.map((el) => (
-          <a key={el.id} href="" className="category-navigation-link">
+          <Link key={el.id} to="" className="category-navigation-link">
             {el.title}
-          </a>
+          </Link>
         ))}
       </nav>
     </header>
