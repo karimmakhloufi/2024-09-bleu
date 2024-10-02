@@ -30,6 +30,13 @@ app.get("/ads", async (req, res) => {
       },
       relations: { tags: true },
     });
+  }
+  if (req.query.title) {
+    ads = await Ad.find({
+      where: {
+        title: Like(`%${req.query.title as string}%`),
+      },
+    });
   } else {
     ads = await Ad.find({
       order: {

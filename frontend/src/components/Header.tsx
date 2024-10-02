@@ -1,4 +1,6 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -8,6 +10,7 @@ export type category = {
 };
 
 const Header = () => {
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([] as category[]);
   useEffect(() => {
     const fetchCategories = async () => {
@@ -29,8 +32,25 @@ const Header = () => {
             <span className="desktop-long-label">THE GOOD CORNER</span>
           </Link>
         </h1>
-        <form className="text-field-with-button">
-          <input className="text-field main-search-field" type="search" />
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            // Read the form data
+            const form = e.target;
+            const formData = new FormData(form as HTMLFormElement);
+
+            // Or you can work with it as a plain object:
+            const formJson = Object.fromEntries(formData.entries());
+            console.log(formJson);
+            navigate(`/ad/search/${formJson.keyword}`);
+          }}
+          className="text-field-with-button"
+        >
+          <input
+            className="text-field main-search-field"
+            type="search"
+            name="keyword"
+          />
           <button className="button button-primary">
             <svg
               aria-hidden="true"
