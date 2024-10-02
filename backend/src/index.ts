@@ -25,12 +25,22 @@ app.get("/ads", async (req, res) => {
       where: {
         category: { title: req.query.category as string },
       },
-      relations: { category: true, tags: true },
+      relations: { tags: true },
     });
   } else {
-    ads = await Ad.find({ relations: { category: true, tags: true } });
+    ads = await Ad.find({ relations: { tags: true } });
   }
   res.send(ads);
+});
+
+app.get("/ads/:id", async (req, res) => {
+  try {
+    const result = await Ad.findOneByOrFail({ id: parseInt(req.params.id) });
+    res.send(result);
+  } catch (err) {
+    console.log("err", err);
+    res.status(400).send(err);
+  }
 });
 
 app.post("/ads", async (req, res) => {
