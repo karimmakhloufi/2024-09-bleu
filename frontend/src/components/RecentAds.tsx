@@ -27,7 +27,6 @@ const RecentAds = () => {
               id={el.id}
               title={el.title}
               picture={el.picture}
-              link={el.link}
               price={el.price}
               category={el.category}
             />
