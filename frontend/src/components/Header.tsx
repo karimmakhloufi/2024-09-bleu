@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-type category = {
+export type category = {
   id: number;
   title: string;
 };
