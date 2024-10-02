@@ -25,10 +25,18 @@ app.get("/ads", async (req, res) => {
       where: {
         category: { title: req.query.category as string },
       },
+      order: {
+        id: "DESC",
+      },
       relations: { tags: true },
     });
   } else {
-    ads = await Ad.find({ relations: { tags: true } });
+    ads = await Ad.find({
+      order: {
+        id: "DESC",
+      },
+      relations: { tags: true },
+    });
   }
   res.send(ads);
 });
