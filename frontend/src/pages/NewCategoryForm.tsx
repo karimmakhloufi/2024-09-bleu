@@ -1,5 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
+import { Fragment } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 type Inputs = {
@@ -37,12 +38,10 @@ const NewCategoryFormPage = () => {
             Object.entries(messages).map(([type, message]) => {
               console.log(message);
               return (
-                <>
+                <Fragment key={type}>
                   <br />
-                  <span className="error-message" key={type}>
-                    {message}
-                  </span>
-                </>
+                  <span className="error-message">{message}</span>
+                </Fragment>
               );
             })
           }
