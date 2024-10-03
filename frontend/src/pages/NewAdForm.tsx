@@ -1,8 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { category } from "../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const NewAdFormPage = () => {
+  const navigate = useNavigate();
   const [categories, setCategories] = useState([] as category[]);
   useEffect(() => {
     const fetchCategories = async () => {
@@ -17,15 +20,22 @@ const NewAdFormPage = () => {
   }, []);
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        // Read the form data
-        const form = e.target;
-        const formData = new FormData(form as HTMLFormElement);
+        try {
+          // Read the form data
+          const form = e.target;
+          const formData = new FormData(form as HTMLFormElement);
 
-        // Or you can work with it as a plain object:
-        const formJson = Object.fromEntries(formData.entries());
-        axios.post("http://localhost:3000/ads", formJson);
+          // Or you can work with it as a plain object:
+          const formJson = Object.fromEntries(formData.entries());
+          await axios.post("http://localhost:3000/ads", formJson);
+          toast.success("Ad has been added");
+          navigate("/");
+        } catch (err) {
+          console.log(err);
+          toast.error("An error occured");
+        }
       }}
     >
       <label>

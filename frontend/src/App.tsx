@@ -10,22 +10,27 @@ import NewCategoryFormPage from "./pages/NewCategoryForm";
 import AdSearchPage from "./pages/AdSearchPage";
 import AdsByCategoryPage from "./pages/AdsByCategoryPage";
 import EditAdForm from "./pages/EditAdForm";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
-        <Route path="about" element={<AboutPage />} />
-        <Route path="ad/new" element={<NewAdFormPage />} />
-        <Route path="ad/search/:keyword" element={<AdSearchPage />} />
-        <Route path="ad/category/:keyword" element={<AdsByCategoryPage />} />
-        <Route path="ad/:id" element={<AdDetailsPage />} />
-        <Route path="ad/edit/:id" element={<EditAdForm />} />
-        <Route path="category/new" element={<NewCategoryFormPage />} />
-        <Route path="counter" element={<CounterPage />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="ad/new" element={<NewAdFormPage />} />
+          <Route path="ad/search/:keyword" element={<AdSearchPage />} />
+          <Route path="ad/category/:keyword" element={<AdsByCategoryPage />} />
+          <Route path="ad/:id" element={<AdDetailsPage />} />
+          <Route path="ad/edit/:id" element={<EditAdForm />} />
+          <Route path="category/new" element={<NewCategoryFormPage />} />
+          <Route path="counter" element={<CounterPage />} />
+        </Route>
+      </Routes>
+      <ToastContainer />
+    </>
   );
 }
 
