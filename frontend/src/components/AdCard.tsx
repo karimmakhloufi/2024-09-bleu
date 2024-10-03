@@ -9,6 +9,7 @@ export type AdCardProps = {
   description?: string;
   owner?: string;
   createdAt?: string;
+  location?: string;
 };
 
 const AdCard = ({ title, price, picture, category, id }: AdCardProps) => (

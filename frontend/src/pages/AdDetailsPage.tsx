@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AdCardProps } from "../components/AdCard";
 
 const AdDetailsPage = () => {
@@ -48,6 +48,9 @@ const AdDetailsPage = () => {
             </svg>
             Envoyer un email
           </a>
+          <Link to={`/ad/edit/${id}`}>
+            <button>Edit</button>
+          </Link>
         </div>
       </section>
     </div>
