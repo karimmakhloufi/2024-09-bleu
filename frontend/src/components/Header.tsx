@@ -42,7 +42,9 @@ const Header = () => {
             // Or you can work with it as a plain object:
             const formJson = Object.fromEntries(formData.entries());
             console.log(formJson);
-            navigate(`/ad/search/${formJson.keyword}`);
+            if (formJson.keyword) {
+              navigate(`/ad/search/${formJson.keyword}`);
+            }
           }}
           className="text-field-with-button"
         >
