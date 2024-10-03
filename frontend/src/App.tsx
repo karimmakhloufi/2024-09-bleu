@@ -29,7 +29,7 @@ function App() {
           <Route path="counter" element={<CounterPage />} />
         </Route>
       </Routes>
-      <ToastContainer />
+      <ToastContainer theme="colored" />
     </>
   );
 }
