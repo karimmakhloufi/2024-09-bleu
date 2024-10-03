@@ -117,9 +117,7 @@ const EditAdForm = () => {
             className="text-field"
             type="date"
             name="createdAt"
-            defaultValue={new Date(adDetails.createdAt as string)
-              .toISOString()
-              .slice(0, 10)}
+            defaultValue={adDetails.createdAt?.slice(0, 10)}
           />
         </label>
         <br />
