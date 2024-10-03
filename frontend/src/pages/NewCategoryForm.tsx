@@ -1,3 +1,4 @@
+import { ErrorMessage } from "@hookform/error-message";
 import axios from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 
@@ -10,7 +11,7 @@ const NewCategoryFormPage = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<Inputs>({ criteriaMode: "all" });
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     await axios.post("http://localhost:3000/categories", data);
   };
@@ -22,12 +23,30 @@ const NewCategoryFormPage = () => {
           <br />
           <input
             className="text-field"
-            {...register("title", { required: true })}
+            {...register("title", {
+              minLength: { value: 2, message: "Minimum 2 characters" },
+              required: "This field is required",
+            })}
           />
-          {errors.title && (
-            <span className="error-message">This field is required</span>
-          )}
         </label>
+        <ErrorMessage
+          errors={errors}
+          name="title"
+          render={({ messages }) =>
+            messages &&
+            Object.entries(messages).map(([type, message]) => {
+              console.log(message);
+              return (
+                <>
+                  <br />
+                  <span className="error-message" key={type}>
+                    {message}
+                  </span>
+                </>
+              );
+            })
+          }
+        />
         <input type="submit" className="button" />
       </form>
     </>
