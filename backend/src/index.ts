@@ -19,19 +19,21 @@ app.get("/", (_req, res) => {
 });
 
 app.get("/ads", async (req, res) => {
-  let ads: Ad[];
+  let ads: Ad[] = [];
   if (req.query.category) {
-    ads = await Ad.find({
-      where: {
-        category: { title: req.query.category as string },
-      },
-      order: {
-        id: "DESC",
-      },
-      relations: { tags: true },
-    });
-  }
-  if (req.query.title) {
+    try {
+      ads = await Ad.find({
+        where: { category: { title: req.query.category as string } },
+        order: {
+          id: "DESC",
+        },
+        relations: { tags: true },
+      });
+    } catch (err) {
+      console.log("err", err);
+      res.status(400).send(err);
+    }
+  } else if (req.query.title) {
     ads = await Ad.find({
       where: {
         title: Like(`%${req.query.title as string}%`),
