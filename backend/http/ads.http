@@ -19,7 +19,11 @@ Content-Type: application/json
     "description": "description",
     "owner": "bike.seller@gmail.com",
     "price": 100,
-    "picture": "https://images.lecho.be/view?iid=dc:113129565&context=ONLINE&ratio=16/9&width=640&u=1508242455000",
+    "pictures":
+      [
+        "https://www.edouard.bzh/wp-content/uploads/2020/11/PXL_20201020_174218902-scaled.jpg",
+        "https://www.edouard.bzh/wp-content/uploads/2020/11/elops-single-speed-500-header-1.jpg"
+      ],
     "location": "Paris",
     "createdAt": "2023-09-05T10:13:14.755Z",
     "tags": [{"id":1},{"id":2}]
