@@ -15,11 +15,18 @@ type Inputs = {
   location: string;
   createdAt: Date;
   category: number;
+  tags: number[];
+};
+
+type Tags = {
+  id: number;
+  name: string;
 };
 
 const NewAdFormPage = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([] as category[]);
+  const [tags, setTags] = useState([] as Tags[]);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -29,6 +36,15 @@ const NewAdFormPage = () => {
         console.log("err", err);
       }
     };
+    const fetchTags = async () => {
+      try {
+        const result = await axios.get("http://localhost:3000/tags");
+        setTags(result.data);
+      } catch (err) {
+        console.log("err", err);
+      }
+    };
+    fetchTags();
     fetchCategories();
   }, []);
   const {
@@ -37,7 +53,14 @@ const NewAdFormPage = () => {
     formState: { errors },
   } = useForm<Inputs>({ criteriaMode: "all" });
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await axios.post("http://localhost:3000/ads", data);
+    console.log("data from react hook form", data);
+    const dataForBackend = {
+      ...data,
+      tags: data.tags.map((el) => ({ id: el })),
+    };
+    console.log("data formatted for backend", dataForBackend);
+
+    await axios.post("http://localhost:3000/ads", dataForBackend);
     toast.success("Ad has been added");
     navigate("/");
   };
@@ -257,6 +280,7 @@ const NewAdFormPage = () => {
         <br />
         <>
           <label>
+            <br />
             Category :
             <br />
             <select {...register("category")}>
@@ -283,6 +307,21 @@ const NewAdFormPage = () => {
               })
             }
           />
+        </>
+        <br />
+        <>
+          <br />
+          Tags :
+          <br />
+          {tags.map((el) => (
+            <Fragment key={el.id}>
+              <label>
+                <input type="checkbox" value={el.id} {...register("tags")} />
+                {el.name}
+              </label>
+              <br />
+            </Fragment>
+          ))}
         </>
         <input type="submit" className="button" />
       </form>
