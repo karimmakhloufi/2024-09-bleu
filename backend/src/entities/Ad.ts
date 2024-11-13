@@ -52,6 +52,7 @@ export class Ad extends BaseEntity {
   @Column()
   createdAt: Date;
 
+  @Field(() => Category, { nullable: true })
   @ManyToOne(() => Category, (category) => category.ads, { eager: true })
   category: Category;
 
