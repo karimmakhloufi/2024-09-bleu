@@ -38,6 +38,7 @@ export class Ad extends BaseEntity {
   @Column()
   price: number;
 
+  @Field(() => [Picture])
   @OneToMany(() => Picture, (picture) => picture.ad, {
     cascade: true,
     eager: true,

@@ -24,6 +24,9 @@ class AdInput implements Partial<Ad> {
 
   @Field(() => ID)
   category: Category;
+
+  @Field(() => [String], { nullable: true })
+  picturesUrls?: string[];
 }
 
 export default AdInput;
