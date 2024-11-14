@@ -23,16 +23,8 @@ class AdResolver {
 
   @Mutation(() => Ad)
   async createNewAd(@Arg("data") newAdData: AdInput) {
-    const adToSave = new Ad();
-    adToSave.createdAt = newAdData.createdAt;
-    adToSave.description = newAdData.description;
-    adToSave.location = newAdData.location;
-    adToSave.owner = newAdData.owner;
-    adToSave.price = newAdData.price;
-    adToSave.title = newAdData.title;
-    adToSave.category = newAdData.category;
-
-    const result = await adToSave.save();
+    const newAdToSave = Ad.create({ ...newAdData });
+    const result = await newAdToSave.save();
     return result;
   }
 
