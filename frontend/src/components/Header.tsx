@@ -1,8 +1,15 @@
 import { useNavigate } from "react-router-dom";
-
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useQuery, gql } from "@apollo/client";
 
+const GET_ALL_CATEGORIES = gql`
+  query GetAllCategories {
+    getAllCategories {
+      id
+      title
+    }
+  }
+`;
 export type category = {
   id: number;
   title: string;
@@ -10,7 +17,11 @@ export type category = {
 
 const Header = () => {
   const navigate = useNavigate();
-  const [categories] = useState([] as category[]);
+
+  const { loading, error, data } = useQuery(GET_ALL_CATEGORIES);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
 
   return (
     <header className="header">
@@ -64,7 +75,7 @@ const Header = () => {
         </Link>
       </div>
       <nav className="categories-navigation">
-        {categories.map((el) => (
+        {data.getAllCategories.map((el: any) => (
           <Link
             key={el.id}
             to={`/ad/category/${el.title}`}

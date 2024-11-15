@@ -3,12 +3,13 @@ import { startStandaloneServer } from "@apollo/server/standalone";
 import { dataSourceGoodCorner } from "./config/db";
 import { buildSchema } from "type-graphql";
 import AdResolver from "./resolvers/AdResolver";
+import CategoryResolver from "./resolvers/CategoryResolver";
 
 const start = async () => {
   await dataSourceGoodCorner.initialize();
 
   const schema = await buildSchema({
-    resolvers: [AdResolver],
+    resolvers: [AdResolver, CategoryResolver],
   });
 
   const server = new ApolloServer({
