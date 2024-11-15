@@ -1,7 +1,6 @@
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export type category = {
@@ -11,18 +10,8 @@ export type category = {
 
 const Header = () => {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([] as category[]);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await axios.get("http://localhost:3000/categories");
-        setCategories(result.data);
-      } catch (err) {
-        console.log("err", err);
-      }
-    };
-    fetchCategories();
-  }, []);
+  const [categories] = useState([] as category[]);
+
   return (
     <header className="header">
       <div className="main-menu">
