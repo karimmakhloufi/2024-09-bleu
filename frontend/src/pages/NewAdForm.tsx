@@ -2,7 +2,7 @@ import { Fragment } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import { useMutation } from "@apollo/client";
 import { CREATE_NEW_AD } from "../graphql/mutations";
 import { useGetAllCategoriesAndTagsQuery } from "../generated/graphql-types";
@@ -12,7 +12,7 @@ type Inputs = {
   description: string;
   owner: string;
   price: string;
-  picturesUrls: string[];
+  picturesUrls: { url: string }[];
   location: string;
   createdAt: string;
   category: number;
@@ -27,6 +27,7 @@ const NewAdFormPage = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<Inputs>({
     criteriaMode: "all",
@@ -34,15 +35,26 @@ const NewAdFormPage = () => {
       category: 1,
       title: "default title",
       description: "default description",
-      createdAt: "23/11/2023",
+      createdAt: "2023-11-23",
       picturesUrls: [
-        "https://www.prioritybicycles.com/cdn/shop/files/600_hero_May2024_1of1.jpg",
+        {
+          url: "https://www.prioritybicycles.com/cdn/shop/files/600_hero_May2024_1of1.jpg",
+        },
+        {
+          url: "https://www.edouard.bzh/wp-content/uploads/2020/11/PXL_20201020_174218902-scaled.jpg",
+        },
       ],
       location: "default location",
       owner: "John Doe",
       price: "100",
     },
   });
+
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "picturesUrls",
+  });
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log("data from react hook form", data);
     const dataForBackend = {
@@ -191,33 +203,35 @@ const NewAdFormPage = () => {
           </>
           <br />
           <>
-            <label>
-              Image:
-              <br />
-              <input
-                className="text-field"
-                {...register("picturesUrls", {
-                  minLength: { value: 2, message: "Minimum 2 characters" },
-                  required: "This field is required",
-                })}
-              />
-            </label>
-            <ErrorMessage
-              errors={errors}
-              name="picture"
-              render={({ messages }) =>
-                messages &&
-                Object.entries(messages).map(([type, message]) => {
-                  console.log(message);
-                  return (
-                    <Fragment key={type}>
+            <br />
+            <button
+              className="button"
+              type="button"
+              onClick={() => append({ url: "" })}
+            >
+              Add Image
+            </button>
+            <br />
+            <div className="field">
+              {fields.map((field, index) => {
+                return (
+                  <div key={field.id}>
+                    <section className="image-input-and-remove">
+                      <input
+                        className="text-field"
+                        placeholder="Your image url"
+                        {...register(`picturesUrls.${index}.url` as const)}
+                      />
+                      <button className="button" onClick={() => remove(index)}>
+                        Remove
+                      </button>
                       <br />
-                      <span className="error-message">{message}</span>
-                    </Fragment>
-                  );
-                })
-              }
-            />
+                    </section>
+                    <span>{errors.picturesUrls?.[index]?.url?.message}</span>
+                  </div>
+                );
+              })}
+            </div>
           </>
           <br />
           <>

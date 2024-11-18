@@ -1,5 +1,12 @@
+import { Picture } from "../entities/Picture";
 import { Category } from "../entities/Category";
 import { Field, ID, InputType } from "type-graphql";
+
+@InputType()
+class PictureInput {
+  @Field()
+  url: string;
+}
 
 @InputType()
 class AdInput {
@@ -24,8 +31,8 @@ class AdInput {
   @Field(() => ID)
   category: Category;
 
-  @Field(() => [String], { nullable: true })
-  picturesUrls?: string[];
+  @Field(() => [PictureInput], { nullable: true })
+  picturesUrls?: Picture[];
 
   @Field(() => [String], { nullable: true })
   tags: string[];
