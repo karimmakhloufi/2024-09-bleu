@@ -38,9 +38,9 @@ export type AdInput = {
   description: Scalars['String']['input'];
   location: Scalars['String']['input'];
   owner: Scalars['String']['input'];
-  picturesUrls?: InputMaybe<Array<Scalars['String']['input']>>;
+  pictures?: InputMaybe<Array<PictureInput>>;
   price: Scalars['Float']['input'];
-  tags?: InputMaybe<Array<Scalars['String']['input']>>;
+  tags?: InputMaybe<Array<TagInput>>;
   title: Scalars['String']['input'];
 };
 
@@ -78,6 +78,10 @@ export type Picture = {
   url: Scalars['String']['output'];
 };
 
+export type PictureInput = {
+  url: Scalars['String']['input'];
+};
+
 export type Query = {
   __typename?: 'Query';
   getAdById: Ad;
@@ -95,6 +99,10 @@ export type Tag = {
   __typename?: 'Tag';
   id: Scalars['Float']['output'];
   name: Scalars['String']['output'];
+};
+
+export type TagInput = {
+  id: Scalars['Float']['input'];
 };
 
 export type UpdateAdInput = {

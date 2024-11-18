@@ -12,7 +12,7 @@ type Inputs = {
   description: string;
   owner: string;
   price: string;
-  picturesUrls: { url: string }[];
+  pictures: { url: string }[];
   location: string;
   createdAt: string;
   category: number;
@@ -36,7 +36,7 @@ const NewAdFormPage = () => {
       title: "default title",
       description: "default description",
       createdAt: "2023-11-23",
-      picturesUrls: [
+      pictures: [
         {
           url: "https://www.prioritybicycles.com/cdn/shop/files/600_hero_May2024_1of1.jpg",
         },
@@ -52,7 +52,7 @@ const NewAdFormPage = () => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "picturesUrls",
+    name: "pictures",
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -61,8 +61,7 @@ const NewAdFormPage = () => {
       ...data,
       price: parseInt(data.price),
       createdAt: data.createdAt + "T00:00:00.000Z",
-      picturesUrls: data.picturesUrls,
-      tags: data.tags ? data.tags : [],
+      tags: data.tags ? data.tags.map((el) => ({ id: parseInt(el) })) : [],
     };
 
     console.log("data for backend", data);
@@ -220,14 +219,14 @@ const NewAdFormPage = () => {
                       <input
                         className="text-field"
                         placeholder="Your image url"
-                        {...register(`picturesUrls.${index}.url` as const)}
+                        {...register(`pictures.${index}.url` as const)}
                       />
                       <button className="button" onClick={() => remove(index)}>
                         Remove
                       </button>
                       <br />
                     </section>
-                    <span>{errors.picturesUrls?.[index]?.url?.message}</span>
+                    <span>{errors.pictures?.[index]?.url?.message}</span>
                   </div>
                 );
               })}
