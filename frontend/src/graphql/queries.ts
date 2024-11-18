@@ -19,6 +19,10 @@ export const GET_ALL_ADS = gql`
       price
       location
       createdAt
+      category {
+        id
+        title
+      }
       pictures {
         id
         url
