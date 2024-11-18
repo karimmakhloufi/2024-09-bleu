@@ -1,30 +1,12 @@
+import { GET_ALL_ADS } from "../graphql/queries";
 import AdCard from "./AdCard";
-import { useQuery, gql } from "@apollo/client";
-
-const GET_ALL_ADS = gql`
-  query GetAllAds {
-    getAllAds {
-      id
-      title
-      description
-      owner
-      price
-      location
-      createdAt
-      pictures {
-        id
-        url
-      }
-    }
-  }
-`;
+import { useQuery } from "@apollo/client";
 
 const RecentAds = () => {
   const { loading, error, data } = useQuery(GET_ALL_ADS);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
-  console.log("data", data);
 
   return (
     <>

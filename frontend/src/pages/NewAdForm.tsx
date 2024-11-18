@@ -1,69 +1,68 @@
-import axios from "axios";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 import { toast } from "react-toastify";
-import { category } from "../components/Header";
 import { useNavigate } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { GET_ALL_CATEGORIES } from "../graphql/queries";
+import { useMutation, useQuery } from "@apollo/client";
+import { CREATE_NEW_AD } from "../graphql/mutations";
 
 type Inputs = {
   title: string;
   description: string;
   owner: string;
-  price: number;
-  picture: string;
+  price: string;
+  picturesUrls: string[];
   location: string;
-  createdAt: Date;
+  createdAt: string;
   category: number;
   tags: number[];
 };
 
-type Tags = {
-  id: number;
-  name: string;
-};
-
 const NewAdFormPage = () => {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState([] as category[]);
-  const [tags, setTags] = useState([] as Tags[]);
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const result = await axios.get("http://localhost:3000/categories");
-        setCategories(result.data);
-      } catch (err) {
-        console.log("err", err);
-      }
-    };
-    const fetchTags = async () => {
-      try {
-        const result = await axios.get("http://localhost:3000/tags");
-        setTags(result.data);
-      } catch (err) {
-        console.log("err", err);
-      }
-    };
-    fetchTags();
-    fetchCategories();
-  }, []);
+
+  const { loading, error, data } = useQuery(GET_ALL_CATEGORIES);
+  const [createNewAd] = useMutation(CREATE_NEW_AD);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>({ criteriaMode: "all" });
+  } = useForm<Inputs>({
+    criteriaMode: "all",
+    defaultValues: {
+      category: 1,
+      title: "default title",
+      description: "default description",
+      createdAt: "2024-11-30T00:00:00.000Z",
+      picturesUrls: [
+        "https://www.prioritybicycles.com/cdn/shop/files/600_hero_May2024_1of1.jpg",
+      ],
+      location: "default location",
+      owner: "John Doe",
+      price: "100",
+    },
+  });
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log("data from react hook form", data);
     const dataForBackend = {
       ...data,
-      tags: data.tags.map((el) => ({ id: el })),
+      price: parseInt(data.price),
+      createdAt: data.createdAt + "T00:00:00.000Z",
+      picturesUrls: [data.picturesUrls],
     };
-    console.log("data formatted for backend", dataForBackend);
 
-    await axios.post("http://localhost:3000/ads", dataForBackend);
+    createNewAd({
+      variables: { data: dataForBackend },
+    });
     toast.success("Ad has been added");
     navigate("/");
   };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error : {error.message}</p>;
+
   return (
     <>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -194,7 +193,7 @@ const NewAdFormPage = () => {
             <br />
             <input
               className="text-field"
-              {...register("picture", {
+              {...register("picturesUrls", {
                 minLength: { value: 2, message: "Minimum 2 characters" },
                 required: "This field is required",
               })}
@@ -284,7 +283,7 @@ const NewAdFormPage = () => {
             Category :
             <br />
             <select {...register("category")}>
-              {categories.map((el) => (
+              {data.getAllCategories.map((el: any) => (
                 <option key={el.id} value={el.id}>
                   {el.title}
                 </option>
@@ -309,20 +308,7 @@ const NewAdFormPage = () => {
           />
         </>
         <br />
-        <>
-          <br />
-          Tags :
-          <br />
-          {tags.map((el) => (
-            <Fragment key={el.id}>
-              <label>
-                <input type="checkbox" value={el.id} {...register("tags")} />
-                {el.name}
-              </label>
-              <br />
-            </Fragment>
-          ))}
-        </>
+
         <input type="submit" className="button" />
       </form>
     </>

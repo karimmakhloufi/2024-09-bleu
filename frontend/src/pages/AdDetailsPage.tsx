@@ -1,27 +1,6 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { Link, useParams } from "react-router-dom";
-
-const GET_AD_BY_ID = gql`
-  query GetAdById($getAdByIdId: Float!) {
-    getAdById(id: $getAdByIdId) {
-      id
-      title
-      description
-      owner
-      price
-      pictures {
-        id
-        url
-      }
-      location
-      createdAt
-      category {
-        id
-        title
-      }
-    }
-  }
-`;
+import { GET_AD_BY_ID } from "../graphql/queries";
 
 const AdDetailsPage = () => {
   const { id } = useParams();
@@ -30,7 +9,7 @@ const AdDetailsPage = () => {
   });
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error : {error.message}</p>;
-  console.log(data);
+
   return (
     <div>
       <h2 className="ad-details-title">{data.getAdById.title}</h2>

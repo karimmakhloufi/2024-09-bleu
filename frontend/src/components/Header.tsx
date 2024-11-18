@@ -1,15 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { GET_ALL_CATEGORIES } from "../graphql/queries";
 
-const GET_ALL_CATEGORIES = gql`
-  query GetAllCategories {
-    getAllCategories {
-      id
-      title
-    }
-  }
-`;
 export type category = {
   id: number;
   title: string;
