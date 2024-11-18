@@ -28,6 +28,7 @@ export type Ad = {
   owner: Scalars['String']['output'];
   pictures: Array<Picture>;
   price: Scalars['Float']['output'];
+  tags: Array<Tag>;
   title: Scalars['String']['output'];
 };
 
@@ -39,6 +40,7 @@ export type AdInput = {
   owner: Scalars['String']['input'];
   picturesUrls?: InputMaybe<Array<Scalars['String']['input']>>;
   price: Scalars['Float']['input'];
+  tags?: InputMaybe<Array<Scalars['String']['input']>>;
   title: Scalars['String']['input'];
 };
 
