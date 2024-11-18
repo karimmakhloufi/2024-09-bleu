@@ -32,7 +32,15 @@ class AdResolver {
         pictures.push(newPicture);
       });
     }
-    const newAdToSave = Ad.create({ ...newAdData, pictures });
+    const newAdToSave = Ad.create({
+      ...newAdData,
+      pictures,
+      tags: newAdData.tags.map((el) => ({ id: parseInt(el) })),
+    });
+    console.log(
+      "new ad to save tags",
+      JSON.stringify(newAdToSave.tags, null, 2)
+    );
     const result = await newAdToSave.save();
     return result;
   }

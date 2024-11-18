@@ -9,6 +9,19 @@ export const GET_ALL_CATEGORIES = gql`
   }
 `;
 
+export const GET_ALL_CATEGORIES_AND_TAGS = gql`
+  query GetAllCategoriesAndTags {
+    getAllCategories {
+      id
+      title
+    }
+    getAllTags {
+      id
+      name
+    }
+  }
+`;
+
 export const GET_ALL_ADS = gql`
   query GetAllAds {
     getAllAds {
