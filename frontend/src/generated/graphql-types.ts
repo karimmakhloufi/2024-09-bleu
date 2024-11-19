@@ -26,7 +26,7 @@ export type Ad = {
   id: Scalars['Float']['output'];
   location: Scalars['String']['output'];
   owner: Scalars['String']['output'];
-  pictures: Array<Picture>;
+  pictures?: Maybe<Array<Picture>>;
   price: Scalars['Float']['output'];
   tags: Array<Tag>;
   title: Scalars['String']['output'];
@@ -95,6 +95,11 @@ export type QueryGetAdByIdArgs = {
   id: Scalars['Float']['input'];
 };
 
+
+export type QueryGetAllAdsArgs = {
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type Tag = {
   __typename?: 'Tag';
   id: Scalars['Float']['output'];
@@ -140,17 +145,19 @@ export type GetAllCategoriesAndTagsQueryVariables = Exact<{ [key: string]: never
 
 export type GetAllCategoriesAndTagsQuery = { __typename?: 'Query', getAllCategories: Array<{ __typename?: 'Category', id: number, title: string }>, getAllTags: Array<{ __typename?: 'Tag', id: number, name: string }> };
 
-export type GetAllAdsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAllAdsQueryVariables = Exact<{
+  title?: InputMaybe<Scalars['String']['input']>;
+}>;
 
 
-export type GetAllAdsQuery = { __typename?: 'Query', getAllAds: Array<{ __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, category?: { __typename?: 'Category', id: number, title: string } | null, pictures: Array<{ __typename?: 'Picture', id: number, url: string }> }> };
+export type GetAllAdsQuery = { __typename?: 'Query', getAllAds: Array<{ __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, category?: { __typename?: 'Category', id: number, title: string } | null, pictures?: Array<{ __typename?: 'Picture', id: number, url: string }> | null, tags: Array<{ __typename?: 'Tag', id: number, name: string }> }> };
 
 export type GetAdByIdQueryVariables = Exact<{
   getAdByIdId: Scalars['Float']['input'];
 }>;
 
 
-export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, pictures: Array<{ __typename?: 'Picture', id: number, url: string }>, category?: { __typename?: 'Category', id: number, title: string } | null } };
+export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, pictures?: Array<{ __typename?: 'Picture', id: number, url: string }> | null, category?: { __typename?: 'Category', id: number, title: string } | null } };
 
 
 export const CreateNewAdDocument = gql`
@@ -302,8 +309,8 @@ export type GetAllCategoriesAndTagsLazyQueryHookResult = ReturnType<typeof useGe
 export type GetAllCategoriesAndTagsSuspenseQueryHookResult = ReturnType<typeof useGetAllCategoriesAndTagsSuspenseQuery>;
 export type GetAllCategoriesAndTagsQueryResult = Apollo.QueryResult<GetAllCategoriesAndTagsQuery, GetAllCategoriesAndTagsQueryVariables>;
 export const GetAllAdsDocument = gql`
-    query GetAllAds {
-  getAllAds {
+    query GetAllAds($title: String) {
+  getAllAds(title: $title) {
     id
     title
     description
@@ -318,6 +325,10 @@ export const GetAllAdsDocument = gql`
     pictures {
       id
       url
+    }
+    tags {
+      id
+      name
     }
   }
 }
@@ -335,6 +346,7 @@ export const GetAllAdsDocument = gql`
  * @example
  * const { data, loading, error } = useGetAllAdsQuery({
  *   variables: {
+ *      title: // value for 'title'
  *   },
  * });
  */

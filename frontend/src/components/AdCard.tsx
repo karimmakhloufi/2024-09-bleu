@@ -1,21 +1,10 @@
 import { Link } from "react-router-dom";
+import { Ad } from "../generated/graphql-types";
 
-export type AdCardProps = {
-  id: number;
-  title: string;
-  price: number;
-  picture: string;
-  category: { id: number; title: string } | undefined | null;
-  description?: string;
-  owner?: string;
-  createdAt?: string;
-  location?: string;
-};
-
-const AdCard = ({ title, price, picture, id }: AdCardProps) => (
+const AdCard = ({ title, price, pictures, id }: Ad) => (
   <div className="ad-card-container">
     <Link className="ad-card-link" to={`/ad/${id}`}>
-      <img className="ad-card-image" src={picture} />
+      <img className="ad-card-image" src={pictures?.at(0)?.url} />
       <div className="ad-card-text">
         <div className="ad-card-title">{title}</div>
         <div className="ad-card-price">{price} €</div>

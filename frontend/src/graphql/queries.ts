@@ -23,8 +23,8 @@ export const GET_ALL_CATEGORIES_AND_TAGS = gql`
 `;
 
 export const GET_ALL_ADS = gql`
-  query GetAllAds {
-    getAllAds {
+  query GetAllAds($title: String) {
+    getAllAds(title: $title) {
       id
       title
       description
@@ -39,6 +39,10 @@ export const GET_ALL_ADS = gql`
       pictures {
         id
         url
+      }
+      tags {
+        id
+        name
       }
     }
   }

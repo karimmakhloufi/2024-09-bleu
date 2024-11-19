@@ -2,19 +2,25 @@ import AdInput from "../inputs/AdInput";
 import { Ad } from "../entities/Ad";
 import { Arg, Mutation, Query, Resolver } from "type-graphql";
 import UpdateAdInput from "../inputs/UpdateAdInput";
+import { FindManyOptions, Like } from "typeorm";
 
 @Resolver(Ad)
 class AdResolver {
   @Query(() => [Ad])
-  async getAllAds() {
-    const ads = await Ad.find({
+  async getAllAds(@Arg("title", { nullable: true }) title?: string) {
+    let ads: Ad[] = [];
+    let findOptions: FindManyOptions<Ad> = {
       order: {
         id: "DESC",
         pictures: {
           id: "DESC",
         },
       },
-    });
+    };
+    if (title) {
+      findOptions = { ...findOptions, where: { title: Like(`%${title}%`) } };
+    }
+    ads = await Ad.find(findOptions);
     return ads;
   }
 
