@@ -3,9 +3,11 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { ErrorMessage } from "@hookform/error-message";
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
-import { useMutation } from "@apollo/client";
-import { CREATE_NEW_AD } from "../graphql/mutations";
-import { useGetAllCategoriesAndTagsQuery } from "../generated/graphql-types";
+import {
+  useCreateNewAdMutation,
+  useGetAllCategoriesAndTagsQuery,
+} from "../generated/graphql-types";
+import { GET_ALL_ADS } from "../graphql/queries";
 
 type Inputs = {
   title: string;
@@ -15,14 +17,16 @@ type Inputs = {
   pictures: { url: string }[];
   location: string;
   createdAt: string;
-  category: number;
+  category: string;
   tags: string[];
 };
 
 const NewAdFormPage = () => {
   const navigate = useNavigate();
   const { error, loading, data } = useGetAllCategoriesAndTagsQuery();
-  const [createNewAd] = useMutation(CREATE_NEW_AD);
+  const [createNewAd] = useCreateNewAdMutation({
+    refetchQueries: [GET_ALL_ADS],
+  });
 
   const {
     register,
@@ -32,7 +36,7 @@ const NewAdFormPage = () => {
   } = useForm<Inputs>({
     criteriaMode: "all",
     defaultValues: {
-      category: 1,
+      category: "1",
       title: "default title",
       description: "default description",
       createdAt: "2023-11-23",

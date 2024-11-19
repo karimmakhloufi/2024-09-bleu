@@ -5,7 +5,7 @@ import { Tag } from "../entities/Tag";
 import { Ad } from "../entities/Ad";
 
 @InputType()
-class PictureInput {
+class PictureInput implements Partial<Picture> {
   @Field()
   url: string;
 }
