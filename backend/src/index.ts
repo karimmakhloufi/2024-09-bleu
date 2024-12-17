@@ -21,5 +21,6 @@ const start = async () => {
   });
 
   console.log(`🚀 Server listening at: ${url}`);
+  console.log("test hot reload");
 };
 start();
