@@ -3,18 +3,25 @@ import { useForm, useFieldArray, SubmitHandler } from "react-hook-form";
 import { Fragment } from "react/jsx-runtime";
 import { useGetAllCategoriesAndTagsQuery } from "../generated/graphql-types";
 
-const CreateOrUpdateAdForm = ({ defaultValues }: { defaultValues: object }) => {
+const CreateOrUpdateAdForm = ({
+  defaultValues,
+  submitToBackend,
+}: {
+  defaultValues: object;
+  submitToBackend: any;
+}) => {
   const { error, loading, data } = useGetAllCategoriesAndTagsQuery();
   type Inputs = {
     title: string;
     description: string;
     owner: string;
     price: string;
-    pictures: { url: string }[];
+    pictures: { url: string; __typename?: string }[];
     location: string;
     createdAt: string;
     category: string;
     tags: string[];
+    __typename?: string;
   };
 
   const {
@@ -34,6 +41,10 @@ const CreateOrUpdateAdForm = ({ defaultValues }: { defaultValues: object }) => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log("data from react hook form", data);
+    delete data.__typename;
+    data.pictures = data.pictures.map((el) => {
+      return { url: el.url };
+    });
     const dataForBackend = {
       ...data,
       price: parseInt(data.price),
@@ -41,7 +52,8 @@ const CreateOrUpdateAdForm = ({ defaultValues }: { defaultValues: object }) => {
       tags: data.tags ? data.tags.map((el) => ({ id: parseInt(el) })) : [],
     };
 
-    console.log("data for backend", dataForBackend);
+    // console.log("data for backend", dataForBackend);
+    submitToBackend({ variables: { data: dataForBackend } });
   };
 
   if (loading) return <p>Loading...</p>;

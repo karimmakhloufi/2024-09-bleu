@@ -54,7 +54,7 @@ const AdDetailsPage = () => {
               </svg>
               Envoyer un email
             </a>
-            <Link to={`/ad/edit/${id}`}>
+            <Link to={`/ad/update/${id}`}>
               <button>Edit</button>
             </Link>
             <button

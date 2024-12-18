@@ -5,13 +5,13 @@ import { Tag } from "../entities/Tag";
 import { Ad } from "../entities/Ad";
 
 @InputType()
-class PictureInput implements Partial<Picture> {
+export class PictureInput implements Partial<Picture> {
   @Field()
   url: string;
 }
 
 @InputType()
-class TagInput {
+export class TagInput {
   @Field()
   id: number;
 }
