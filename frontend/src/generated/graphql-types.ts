@@ -97,6 +97,7 @@ export type QueryGetAdByIdArgs = {
 
 
 export type QueryGetAllAdsArgs = {
+  category?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -156,6 +157,7 @@ export type GetAllCategoriesAndTagsQuery = { __typename?: 'Query', getAllCategor
 
 export type GetAllAdsQueryVariables = Exact<{
   title?: InputMaybe<Scalars['String']['input']>;
+  category?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
@@ -349,8 +351,8 @@ export type GetAllCategoriesAndTagsLazyQueryHookResult = ReturnType<typeof useGe
 export type GetAllCategoriesAndTagsSuspenseQueryHookResult = ReturnType<typeof useGetAllCategoriesAndTagsSuspenseQuery>;
 export type GetAllCategoriesAndTagsQueryResult = Apollo.QueryResult<GetAllCategoriesAndTagsQuery, GetAllCategoriesAndTagsQueryVariables>;
 export const GetAllAdsDocument = gql`
-    query GetAllAds($title: String) {
-  getAllAds(title: $title) {
+    query GetAllAds($title: String, $category: String) {
+  getAllAds(title: $title, category: $category) {
     id
     title
     description
@@ -387,6 +389,7 @@ export const GetAllAdsDocument = gql`
  * const { data, loading, error } = useGetAllAdsQuery({
  *   variables: {
  *      title: // value for 'title'
+ *      category: // value for 'category'
  *   },
  * });
  */

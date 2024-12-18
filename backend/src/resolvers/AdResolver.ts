@@ -7,7 +7,10 @@ import { FindManyOptions, Like } from "typeorm";
 @Resolver(Ad)
 class AdResolver {
   @Query(() => [Ad])
-  async getAllAds(@Arg("title", { nullable: true }) title?: string) {
+  async getAllAds(
+    @Arg("title", { nullable: true }) title?: string,
+    @Arg("category", { nullable: true }) category?: string
+  ) {
     let ads: Ad[] = [];
     let findOptions: FindManyOptions<Ad> = {
       order: {
@@ -19,6 +22,12 @@ class AdResolver {
     };
     if (title) {
       findOptions = { ...findOptions, where: { title: Like(`%${title}%`) } };
+    }
+    if (category) {
+      findOptions = {
+        ...findOptions,
+        where: { category: { title: category } },
+      };
     }
     ads = await Ad.find(findOptions);
     return ads;
