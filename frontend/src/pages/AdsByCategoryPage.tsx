@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import AdCard, { AdCardProps } from "../components/AdCard";
+import AdCard from "../components/AdCard";
 import { useGetAllAdsQuery } from "../generated/graphql-types";
 
 const AdsByCategoryPage = () => {

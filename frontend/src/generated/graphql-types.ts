@@ -20,13 +20,13 @@ export type Scalars = {
 
 export type Ad = {
   __typename?: 'Ad';
-  category?: Maybe<Category>;
+  category: Category;
   createdAt: Scalars['DateTimeISO']['output'];
   description: Scalars['String']['output'];
   id: Scalars['Float']['output'];
   location: Scalars['String']['output'];
   owner: Scalars['String']['output'];
-  pictures?: Maybe<Array<Picture>>;
+  pictures: Array<Picture>;
   price: Scalars['Float']['output'];
   tags: Array<Tag>;
   title: Scalars['String']['output'];
@@ -161,14 +161,14 @@ export type GetAllAdsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllAdsQuery = { __typename?: 'Query', getAllAds: Array<{ __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, category?: { __typename?: 'Category', id: number, title: string } | null, pictures?: Array<{ __typename?: 'Picture', id: number, url: string }> | null, tags: Array<{ __typename?: 'Tag', id: number, name: string }> }> };
+export type GetAllAdsQuery = { __typename?: 'Query', getAllAds: Array<{ __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, category: { __typename?: 'Category', id: number, title: string }, pictures: Array<{ __typename?: 'Picture', id: number, url: string }>, tags: Array<{ __typename?: 'Tag', id: number, name: string }> }> };
 
 export type GetAdByIdQueryVariables = Exact<{
   getAdByIdId: Scalars['Float']['input'];
 }>;
 
 
-export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, pictures?: Array<{ __typename?: 'Picture', id: number, url: string }> | null, category?: { __typename?: 'Category', id: number, title: string } | null } };
+export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, pictures: Array<{ __typename?: 'Picture', id: number, url: string }>, category: { __typename?: 'Category', id: number, title: string } } };
 
 
 export const CreateNewAdDocument = gql`

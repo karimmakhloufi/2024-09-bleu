@@ -38,7 +38,7 @@ export class Ad extends BaseEntity {
   @Column()
   price: number;
 
-  @Field(() => [Picture], { nullable: true })
+  @Field(() => [Picture])
   @OneToMany(() => Picture, (picture) => picture.ad, {
     cascade: true,
     eager: true,
@@ -53,7 +53,7 @@ export class Ad extends BaseEntity {
   @Column()
   createdAt: Date;
 
-  @Field(() => Category, { nullable: true })
+  @Field(() => Category)
   @ManyToOne(() => Category, (category) => category.ads, { eager: true })
   category: Category;
 
