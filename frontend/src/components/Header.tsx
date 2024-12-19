@@ -9,6 +9,7 @@ export type category = {
 };
 
 const Header = () => {
+  console.log("test");
   const navigate = useNavigate();
 
   const { loading, error, data } = useQuery(GET_ALL_CATEGORIES);
