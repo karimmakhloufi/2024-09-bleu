@@ -13,6 +13,7 @@ import EditAdForm from "./pages/EditAdForm";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 import UpdateAdPage from "./pages/UpdateAdPage";
+import SingleFileUploader from "./pages/TestFileUpload";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="ad/edit/:id" element={<EditAdForm />} />
           <Route path="category/new" element={<NewCategoryFormPage />} />
           <Route path="counter" element={<CounterPage />} />
+          <Route path="testimg" element={<SingleFileUploader />} />
         </Route>
       </Routes>
       <ToastContainer theme="colored" />
