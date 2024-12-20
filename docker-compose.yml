@@ -59,3 +59,4 @@ services:
       retries: 100
     volumes:
       - ./img/uploads:/app/uploads
+      - ./img/clean.js:/app/clean.js
