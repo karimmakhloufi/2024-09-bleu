@@ -128,7 +128,7 @@ h1 {
 }
 
 .ad-card-image {
-  width: 100%;
+  height: 200px;
   border-radius: 8px;
 }
 
@@ -152,8 +152,8 @@ h1 {
   margin-inline-end: -24px;
 }
 
-.ad-details-image {
-  width: 100%;
+.ad-details-image-container img {
+  height: 200px;
 }
 
 .ad-details {
@@ -208,4 +208,9 @@ h1 {
 }
 
 .image-input-and-remove {
+  display: flex;
+}
+
+.image-input-and-remove img {
+  height: 100px;
 }

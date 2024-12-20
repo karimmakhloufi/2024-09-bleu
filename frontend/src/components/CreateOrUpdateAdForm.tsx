@@ -34,10 +34,14 @@ const CreateOrUpdateAdForm = ({
     control,
     formState: { errors },
     setValue,
+    getValues,
+    watch,
   } = useForm<Inputs>({
     criteriaMode: "all",
     defaultValues: defaultValues,
   });
+
+  watch("pictures");
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -193,45 +197,49 @@ const CreateOrUpdateAdForm = ({
           <br />
           <>
             <br />
-            <button
-              className="button"
-              type="button"
-              onClick={() => append({ url: "" })}
-            >
-              Add Image
-            </button>
-            <br />
-            <div className="field">
+            <div className="image-input-and-remove">
               {fields.map((field, index) => {
                 return (
                   <div key={field.id}>
-                    <section className="image-input-and-remove">
-                      <input
-                        id="file"
-                        type="file"
-                        onChange={async (
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ) => {
-                          if (e.target.files) {
-                            const formData = new FormData();
-                            formData.append("file", e.target.files[0]);
+                    <section>
+                      {getValues(`pictures.${index}.url`) ? (
+                        <img
+                          className="thumbnail"
+                          src={getValues(`pictures.${index}.url`)}
+                        />
+                      ) : (
+                        <input
+                          id="file"
+                          type="file"
+                          onChange={async (
+                            e: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            if (e.target.files) {
+                              const formData = new FormData();
+                              formData.append("file", e.target.files[0]);
 
-                            try {
-                              const result = await axios.post("/img", formData);
-                              setValue(
-                                `pictures.${index}.url`,
-                                result.data.filename
-                              );
-                            } catch (error) {
-                              console.error(error);
+                              try {
+                                const result = await axios.post(
+                                  "/img",
+                                  formData
+                                );
+                                setValue(
+                                  `pictures.${index}.url`,
+                                  result.data.filename
+                                );
+                              } catch (error) {
+                                console.error(error);
+                              }
                             }
-                          }
-                        }}
-                      />
+                          }}
+                        />
+                      )}
+
                       <input
                         className="text-field"
                         placeholder="Your image url"
                         {...register(`pictures.${index}.url` as const)}
+                        type="hidden"
                       />
                       <button className="button" onClick={() => remove(index)}>
                         Remove
@@ -243,6 +251,13 @@ const CreateOrUpdateAdForm = ({
                 );
               })}
             </div>
+            <button
+              className="button"
+              type="button"
+              onClick={() => append({ url: "" })}
+            >
+              Add Image
+            </button>
           </>
           <br />
           <>
