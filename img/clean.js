@@ -20,7 +20,12 @@ const filesToKeep = res.rows.map((el) => el.url);
 await client.end();
 
 fs.readdirSync("./uploads/").forEach((file) => {
-  if (!filesToKeep.includes("/img/" + file)) {
+  const hoursOld =
+    (Date.now() - fs.statSync("/app/uploads/" + file).birthtime) /
+    1000 /
+    60 /
+    60;
+  if (!filesToKeep.includes("/img/" + file) && hoursOld > 24) {
     fs.unlink("/app/uploads/" + file, (err) => {
       if (err) throw err;
       console.log(file, "was deleted");
