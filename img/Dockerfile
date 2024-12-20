@@ -8,6 +8,8 @@ RUN mkdir uploads
 COPY package.json package.json
 RUN npm install
 
+COPY clean.js clean.js
+
 COPY tsconfig.json tsconfig.json
 
 COPY src src
