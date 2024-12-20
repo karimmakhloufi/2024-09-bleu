@@ -3,6 +3,7 @@ import React, { useState } from "react";
 
 const SingleFileUploader = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -21,6 +22,7 @@ const SingleFileUploader = () => {
         const result = await axios.post("/img", formData);
 
         console.log(result);
+        setUploadedFile(result.data.filename);
       } catch (error) {
         console.error(error);
       }
@@ -48,6 +50,13 @@ const SingleFileUploader = () => {
           Upload a file
         </button>
       )}
+      {uploadedFile ? (
+        <>
+          <br />
+          <br />
+          <img src={uploadedFile} />
+        </>
+      ) : null}
     </>
   );
 };
