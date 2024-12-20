@@ -20,10 +20,9 @@ const AdDetailsPage = () => {
         <h2 className="ad-details-title">{data.getAdById.title}</h2>
         <section className="ad-details">
           <div className="ad-details-image-container">
-            <img
-              className="ad-details-image"
-              src={data.getAdById.pictures?.at(0)?.url}
-            />
+            {data.getAdById.pictures.map((el) => (
+              <img key={el.id} src={el.url} />
+            ))}
           </div>
           <div className="ad-details-info">
             <div className="ad-details-price">{data.getAdById.price} €</div>

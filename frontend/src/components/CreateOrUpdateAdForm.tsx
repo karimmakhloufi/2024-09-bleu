@@ -4,6 +4,7 @@ import { Fragment } from "react/jsx-runtime";
 import { useGetAllCategoriesAndTagsQuery } from "../generated/graphql-types";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const CreateOrUpdateAdForm = ({
   defaultValues,
@@ -32,6 +33,7 @@ const CreateOrUpdateAdForm = ({
     handleSubmit,
     control,
     formState: { errors },
+    setValue,
   } = useForm<Inputs>({
     criteriaMode: "all",
     defaultValues: defaultValues,
@@ -204,6 +206,28 @@ const CreateOrUpdateAdForm = ({
                 return (
                   <div key={field.id}>
                     <section className="image-input-and-remove">
+                      <input
+                        id="file"
+                        type="file"
+                        onChange={async (
+                          e: React.ChangeEvent<HTMLInputElement>
+                        ) => {
+                          if (e.target.files) {
+                            const formData = new FormData();
+                            formData.append("file", e.target.files[0]);
+
+                            try {
+                              const result = await axios.post("/img", formData);
+                              setValue(
+                                `pictures.${index}.url`,
+                                result.data.filename
+                              );
+                            } catch (error) {
+                              console.error(error);
+                            }
+                          }
+                        }}
+                      />
                       <input
                         className="text-field"
                         placeholder="Your image url"
