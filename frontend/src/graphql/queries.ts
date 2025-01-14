@@ -69,3 +69,9 @@ export const GET_AD_BY_ID = gql`
     }
   }
 `;
+
+export const LOGIN = gql`
+  query Login($data: UserInput!) {
+    login(data: $data)
+  }
+`;
