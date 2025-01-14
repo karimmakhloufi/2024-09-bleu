@@ -94,6 +94,7 @@ export type Query = {
   getAllAds: Array<Ad>;
   getAllCategories: Array<Category>;
   getAllTags: Array<Tag>;
+  login: Scalars['String']['output'];
 };
 
 
@@ -105,6 +106,11 @@ export type QueryGetAdByIdArgs = {
 export type QueryGetAllAdsArgs = {
   category?: InputMaybe<Scalars['String']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryLoginArgs = {
+  data: UserInput;
 };
 
 export type Tag = {
