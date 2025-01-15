@@ -1,9 +1,26 @@
-import { Arg, Ctx, Mutation, Query, Resolver } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from "type-graphql";
 import * as argon2 from "argon2";
 
 import jwt, { Secret } from "jsonwebtoken";
 import { User } from "../entities/User";
 import { UserInput } from "../inputs/UserInput";
+
+@ObjectType()
+class UserInfo {
+  @Field()
+  isLoggedIn: boolean;
+
+  @Field({ nullable: true })
+  email?: String;
+}
 
 @Resolver(User)
 class UserResolver {
@@ -17,7 +34,7 @@ class UserResolver {
     return "The user was created";
   }
 
-  @Query(() => String)
+  @Mutation(() => String)
   async login(@Arg("data") loginUserData: UserInput, @Ctx() context: any) {
     let isPasswordCorrect = false;
     const user = await User.findOneBy({ email: loginUserData.email });
@@ -37,6 +54,15 @@ class UserResolver {
       return "ok";
     } else {
       throw new Error("Incorrect login");
+    }
+  }
+
+  @Query(() => UserInfo)
+  async getUserInfo(@Ctx() context: any) {
+    if (context.email) {
+      return { isLoggedIn: true, email: context.email };
+    } else {
+      return { isLoggedIn: false };
     }
   }
 }
