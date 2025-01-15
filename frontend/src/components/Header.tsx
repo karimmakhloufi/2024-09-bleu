@@ -10,6 +10,7 @@ export type category = {
 
 const Header = () => {
   const navigate = useNavigate();
+  const isLoggedIn = localStorage.getItem("token") ? true : false;
 
   const { loading, error, data } = useQuery(GET_ALL_CATEGORIES);
 
@@ -62,10 +63,34 @@ const Header = () => {
             </svg>
           </button>
         </form>
-        <Link to="/ad/new" className="button link-button">
-          <span className="mobile-short-label">Publier</span>
-          <span className="desktop-long-label">Publier une annonce</span>
-        </Link>
+        {isLoggedIn ? (
+          <>
+            <Link to="/ad/new" className="button link-button">
+              <span className="mobile-short-label">Publier</span>
+              <span className="desktop-long-label">Publier une annonce</span>
+            </Link>
+            <button
+              className="button link-button"
+              onClick={() => {
+                localStorage.removeItem("token");
+                navigate("/");
+              }}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="button link-button">
+              <span className="mobile-short-label">Login</span>
+              <span className="desktop-long-label">Login</span>
+            </Link>
+            <Link to="/register" className="button link-button">
+              <span className="mobile-short-label">Register</span>
+              <span className="desktop-long-label">Register</span>
+            </Link>
+          </>
+        )}
       </div>
       <nav className="categories-navigation">
         {data.getAllCategories.map((el: any) => (

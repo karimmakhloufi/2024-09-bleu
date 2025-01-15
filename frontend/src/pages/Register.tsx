@@ -1,8 +1,8 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useLoginLazyQuery } from "../generated/graphql-types";
+import { useRegisterMutation } from "../generated/graphql-types";
 import { useNavigate } from "react-router-dom";
-const LoginPage = () => {
-  const [login] = useLoginLazyQuery();
+const RegisterPage = () => {
+  const [registerMutation] = useRegisterMutation();
   const navigate = useNavigate();
   type Inputs = {
     login: string;
@@ -16,12 +16,11 @@ const LoginPage = () => {
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     console.log("data", data);
-    login({
+    registerMutation({
       variables: { data: { email: data.login, password: data.password } },
       onCompleted: (result) => {
         console.log("result", result);
-        localStorage.setItem("token", result.login);
-        navigate("/");
+        navigate("/login");
       },
       onError: (error) => {
         console.log("error", error);
@@ -31,7 +30,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <h2>Login</h2>
+      <h2>Register</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <input
           defaultValue={"john.doe@gmail.com"}
@@ -54,4 +53,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
