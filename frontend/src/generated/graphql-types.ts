@@ -25,11 +25,11 @@ export type Ad = {
   description: Scalars['String']['output'];
   id: Scalars['Float']['output'];
   location: Scalars['String']['output'];
-  owner: Scalars['String']['output'];
   pictures: Array<Picture>;
   price: Scalars['Float']['output'];
   tags: Array<Tag>;
   title: Scalars['String']['output'];
+  user: User;
 };
 
 export type AdInput = {
@@ -37,7 +37,6 @@ export type AdInput = {
   createdAt: Scalars['DateTimeISO']['input'];
   description: Scalars['String']['input'];
   location: Scalars['String']['input'];
-  owner: Scalars['String']['input'];
   pictures?: InputMaybe<Array<PictureInput>>;
   price: Scalars['Float']['input'];
   tags?: InputMaybe<Array<TagInput>>;
@@ -136,6 +135,12 @@ export type UpdateAdInput = {
   title?: InputMaybe<Scalars['String']['input']>;
 };
 
+export type User = {
+  __typename?: 'User';
+  ads: Array<Ad>;
+  email: Scalars['String']['output'];
+};
+
 export type UserInput = {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
@@ -178,14 +183,14 @@ export type GetAllAdsQueryVariables = Exact<{
 }>;
 
 
-export type GetAllAdsQuery = { __typename?: 'Query', getAllAds: Array<{ __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, category: { __typename?: 'Category', id: number, title: string }, pictures: Array<{ __typename?: 'Picture', id: number, url: string }>, tags: Array<{ __typename?: 'Tag', id: number, name: string }> }> };
+export type GetAllAdsQuery = { __typename?: 'Query', getAllAds: Array<{ __typename?: 'Ad', id: number, title: string, description: string, price: number, location: string, createdAt: any, category: { __typename?: 'Category', id: number, title: string }, pictures: Array<{ __typename?: 'Picture', id: number, url: string }>, tags: Array<{ __typename?: 'Tag', id: number, name: string }> }> };
 
 export type GetAdByIdQueryVariables = Exact<{
   getAdByIdId: Scalars['Float']['input'];
 }>;
 
 
-export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, owner: string, price: number, location: string, createdAt: any, pictures: Array<{ __typename?: 'Picture', id: number, url: string }>, category: { __typename?: 'Category', id: number, title: string } } };
+export type GetAdByIdQuery = { __typename?: 'Query', getAdById: { __typename?: 'Ad', id: number, title: string, description: string, price: number, location: string, createdAt: any, user: { __typename?: 'User', email: string }, pictures: Array<{ __typename?: 'Picture', id: number, url: string }>, category: { __typename?: 'Category', id: number, title: string } } };
 
 export type LoginQueryVariables = Exact<{
   data: UserInput;
@@ -380,7 +385,6 @@ export const GetAllAdsDocument = gql`
     id
     title
     description
-    owner
     price
     location
     createdAt
@@ -439,8 +443,10 @@ export const GetAdByIdDocument = gql`
     id
     title
     description
-    owner
     price
+    user {
+      email
+    }
     pictures {
       id
       url

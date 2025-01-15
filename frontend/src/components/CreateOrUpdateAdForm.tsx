@@ -18,7 +18,6 @@ const CreateOrUpdateAdForm = ({
   type Inputs = {
     title: string;
     description: string;
-    owner: string;
     price: string;
     pictures: { url: string; __typename?: string }[];
     location: string;
@@ -119,36 +118,6 @@ const CreateOrUpdateAdForm = ({
             <ErrorMessage
               errors={errors}
               name="description"
-              render={({ messages }) =>
-                messages &&
-                Object.entries(messages).map(([type, message]) => {
-                  console.log(message);
-                  return (
-                    <Fragment key={type}>
-                      <br />
-                      <span className="error-message">{message}</span>
-                    </Fragment>
-                  );
-                })
-              }
-            />
-          </>
-          <br />
-          <>
-            <label>
-              Vendeur:
-              <br />
-              <input
-                className="text-field"
-                {...register("owner", {
-                  minLength: { value: 2, message: "Minimum 2 characters" },
-                  required: "This field is required",
-                })}
-              />
-            </label>
-            <ErrorMessage
-              errors={errors}
-              name="owner"
               render={({ messages }) =>
                 messages &&
                 Object.entries(messages).map(([type, message]) => {
