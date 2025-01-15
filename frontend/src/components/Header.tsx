@@ -8,7 +8,11 @@ export type category = {
   title: string;
 };
 
-const Header = () => {
+const Header = ({
+  setShowLogin,
+}: {
+  setShowLogin: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem("token") ? true : false;
 
@@ -81,10 +85,14 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link to="/login" className="button link-button">
-              <span className="mobile-short-label">Login</span>
-              <span className="desktop-long-label">Login</span>
-            </Link>
+            <button
+              className="button link-button"
+              onClick={() => {
+                setShowLogin(true);
+              }}
+            >
+              Login
+            </button>
             <Link to="/register" className="button link-button">
               <span className="mobile-short-label">Register</span>
               <span className="desktop-long-label">Register</span>
