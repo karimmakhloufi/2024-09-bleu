@@ -38,7 +38,17 @@ const LoginPage = ({
   return (
     <div className="loginModalContainer">
       <div className="loginModalContent">
-        <h2>Login</h2>
+        <div className="titleAndButtonContainer">
+          <h2>Login</h2>
+          <div
+            onClick={() => {
+              setShowLogin(false);
+            }}
+            className="close"
+          >
+            X
+          </div>
+        </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           <input
             defaultValue={"john.doe@gmail.com"}
@@ -57,7 +67,14 @@ const LoginPage = ({
 
           <input type="submit" />
         </form>
-        <Link to="/forgotPassword">Mot de passe oublié</Link>
+        <Link
+          onClick={() => {
+            setShowLogin(false);
+          }}
+          to="/forgotPassword"
+        >
+          Mot de passe oublié
+        </Link>
       </div>
     </div>
   );
