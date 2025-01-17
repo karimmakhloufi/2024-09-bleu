@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../generated/graphql-types";
 import { GET_USER_INFO } from "../graphql/queries";
 const LoginPage = ({
@@ -57,6 +57,7 @@ const LoginPage = ({
 
           <input type="submit" />
         </form>
+        <Link to="/forgotPassword">Mot de passe oublié</Link>
       </div>
     </div>
   );
