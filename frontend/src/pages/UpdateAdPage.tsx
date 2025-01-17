@@ -18,6 +18,7 @@ const UpdateAdPage = () => {
   if (error) return <p>Error : {error.message}</p>;
   if (data) {
     console.log("data", data);
+
     return (
       <CreateOrUpdateAdForm
         defaultValues={{

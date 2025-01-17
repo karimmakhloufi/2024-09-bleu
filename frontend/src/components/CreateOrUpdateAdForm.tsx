@@ -40,6 +40,8 @@ const CreateOrUpdateAdForm = ({
     defaultValues: defaultValues,
   });
 
+  console.log("default values", defaultValues);
+
   watch("pictures");
 
   const { fields, append, remove } = useFieldArray({
@@ -53,14 +55,16 @@ const CreateOrUpdateAdForm = ({
     data.pictures = data.pictures.map((el) => {
       return { url: el.url };
     });
-    const dataForBackend = {
+    const dataForBackend: any = {
       ...data,
       price: parseInt(data.price),
       createdAt: data.createdAt + "T00:00:00.000Z",
       tags: data.tags ? data.tags.map((el) => ({ id: parseInt(el) })) : [],
     };
 
-    // console.log("data for backend", dataForBackend);
+    delete dataForBackend.user;
+
+    console.log("data for backend", dataForBackend);
     await submitToBackend({ variables: { data: dataForBackend } });
     toast.success("Succes");
     navigate("/");
