@@ -8,5 +8,7 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+      - name: create .env
+        run: cp .env.example .env
       - name: Launch e2e tests
         run: docker compose -f docker-compose.e2e.yml up --build
