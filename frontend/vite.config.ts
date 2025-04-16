@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -5,6 +6,5 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   test: { globals: true, environment: "jsdom" },
-  // @ts-expect-error : next-line
   server: { host: true, hmr: { path: "/hmr" }, allowedHosts: true },
 });
