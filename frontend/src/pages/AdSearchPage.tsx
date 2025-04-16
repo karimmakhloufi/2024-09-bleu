@@ -26,7 +26,6 @@ const AdSearchPage = () => {
                 createdAt={el.createdAt}
                 description={el.description}
                 location={el.location}
-                owner={el.owner}
                 tags={el.tags}
               />
             </div>

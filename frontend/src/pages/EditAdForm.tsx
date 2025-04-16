@@ -1,13 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { category } from "../components/Header";
-import { AdCardProps } from "../components/AdCard";
 import { useParams } from "react-router-dom";
 
 const EditAdForm = () => {
   const { id } = useParams();
   const [categories, setCategories] = useState([] as category[]);
-  const [adDetails, setAdDetails] = useState<AdCardProps>();
+  const [adDetails, setAdDetails] = useState<any>();
   useEffect(() => {
     const fetchCategories = async () => {
       try {
