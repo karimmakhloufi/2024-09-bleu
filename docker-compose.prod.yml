@@ -14,9 +14,7 @@ services:
       db:
         condition: service_healthy
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.prod
+    image: karimwcs/backend:aa4349f
     healthcheck:
       test: 'curl --fail --request POST --header ''content-type: application/json'' --url ''http://localhost:4000'' --data ''{"query":"query { __typename }"}'' || exit 1'
       interval: 1s
@@ -28,9 +26,7 @@ services:
       db:
         condition: service_healthy
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.prod
+    image: karimwcs/frontend:aa4349f
     depends_on:
       backend:
         condition: service_healthy
@@ -53,7 +49,7 @@ services:
     ports:
       - 7000:80
   img:
-    build: ./img
+    image: karimwcs/img:aa4349f
     healthcheck:
       test: "curl --fail --request GET --url 'http://localhost:4000' || exit 1"
       interval: 1s
@@ -61,4 +57,3 @@ services:
       retries: 100
     volumes:
       - ./img/uploads:/app/uploads
-      - ./img/clean.js:/app/clean.js
