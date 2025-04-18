@@ -9,7 +9,7 @@ const RecentAds = () => {
   if (data) {
     return (
       <>
-        <h2>Annonces récentes test CI/CD 2</h2>
+        <h2>Annonces récentes test CI/CD 3</h2>
         <section className="recent-ads">
           {data.getAllAds.map((el) => {
             // console.log("el", el);
